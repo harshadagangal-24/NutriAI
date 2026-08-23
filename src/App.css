@@ -1495,88 +1495,457 @@ button {
 
 @media (max-width: 600px) {
 
+  /* -----------------------------
+     NAVBAR
+  ----------------------------- */
+
   .navbar {
+    height: 68px;
+
     padding:
-      0 5%;
+      0 20px;
+  }
+
+  .logo {
+    font-size: 23px;
   }
 
   .nav-links {
     display: none;
   }
 
-  .hero-section {
+  .nav-button {
     padding:
-      55px 6%;
+      9px 14px;
+
+    font-size: 12px;
+  }
+
+
+  /* -----------------------------
+     MOBILE BACKGROUND
+  ----------------------------- */
+
+  .organic-wave {
+    opacity: 0.45;
+  }
+
+  .wave-1 {
+    width: 600px;
+    height: 300px;
+
+    left: -260px;
+    top: 80px;
+  }
+
+  .wave-2 {
+    width: 650px;
+    height: 300px;
+
+    right: -330px;
+    top: 380px;
+  }
+
+  .wave-3 {
+    width: 600px;
+    height: 180px;
+
+    left: -80px;
+    bottom: 100px;
+  }
+
+
+  /* -----------------------------
+     HERO
+  ----------------------------- */
+
+  .hero-section {
+    min-height: auto;
+
+    padding:
+      60px 20px 70px;
+
+    gap: 45px;
+
+    text-align: center;
+  }
+
+  .hero-content {
+    width: 100%;
+
+    max-width: 100%;
+  }
+
+  .badge {
+    padding:
+      7px 12px;
+
+    margin-bottom: 20px;
+
+    font-size: 10px;
   }
 
   .hero-content h1 {
     font-size:
-      48px;
+      clamp(39px, 12vw, 50px);
+
+    line-height:
+      1.08;
+
+    letter-spacing:
+      -1.5px;
   }
 
   .hero-content > p {
-    font-size:
-      15px;
+    margin-top: 20px;
+
+    max-width: 100%;
+
+    font-size: 14px;
+
+    line-height: 1.7;
   }
+
+
+  /* -----------------------------
+     HERO CARD
+  ----------------------------- */
 
   .hero-card {
     width: 100%;
 
+    max-width: 370px;
+
     min-height: 390px;
 
     padding:
-      35px 25px;
+      30px 23px;
+
+    border-radius: 22px;
+  }
+
+  .hero-card h3 {
+    font-size: 25px;
+  }
+
+  .card-label {
+    margin-bottom: 9px;
+
+    font-size: 9px;
+  }
+
+  .card-check {
+    width: 34px;
+    height: 34px;
+
+    font-size: 16px;
+  }
+
+  .food-visual {
+    height: 135px;
+
+    margin-top: 20px;
   }
 
   .food-plate {
     width: 105px;
     height: 105px;
 
-    font-size: 50px;
+    font-size: 48px;
   }
 
-  .features-section,
-  .about-section {
+  .mini-stats {
+    padding-top: 20px;
+  }
+
+  .mini-stats strong {
+    font-size: 13px;
+  }
+
+  .mini-stats span {
+    font-size: 10px;
+  }
+
+
+  /* -----------------------------
+     FEATURES
+  ----------------------------- */
+
+  .features-section {
     padding:
-      70px 6%;
+      75px 20px;
+  }
+
+  .section-heading {
+    margin-bottom:
+      40px;
+  }
+
+  .section-heading > span {
+    font-size: 10px;
   }
 
   .section-heading h2,
   .about-section h2 {
     font-size:
-      34px;
+      clamp(30px, 9vw, 36px);
+
+    line-height:
+      1.2;
+  }
+
+  .section-heading p {
+    margin-top: 12px;
+
+    font-size: 14px;
   }
 
   .features-grid {
     grid-template-columns:
       1fr;
+
+    gap: 15px;
+  }
+
+  .feature-card {
+    min-height:
+      auto;
+
+    padding:
+      25px 22px;
+  }
+
+  .feature-icon {
+    font-size: 27px;
+
+    margin-bottom: 15px;
+  }
+
+  .feature-card h3 {
+    font-size: 16px;
+  }
+
+  .feature-card p {
+    font-size: 13px;
+  }
+
+
+  /* -----------------------------
+     ABOUT
+  ----------------------------- */
+
+  .about-section {
+    padding:
+      75px 20px;
+  }
+
+  .about-content {
+    max-width:
+      100%;
+  }
+
+  .about-content > span {
+    font-size: 10px;
+  }
+
+  .about-content > p {
+    margin-top: 16px;
+
+    font-size: 14px;
+
+    line-height: 1.75;
+  }
+
+  .about-points {
+    margin-top: 25px;
+
+    gap: 17px;
+
+    width: 100%;
+  }
+
+  .about-point {
+    gap: 9px;
+  }
+
+  .about-point strong {
+    font-size: 14px;
+  }
+
+  .about-point p {
+    font-size: 12px;
+  }
+
+
+  /* -----------------------------
+     MODAL
+  ----------------------------- */
+
+  .modal-overlay {
+    padding:
+      14px;
+  }
+
+  .modal {
+    width: 100%;
+
+    max-height:
+      calc(100vh - 28px);
+
+    overflow-y:
+      auto;
+
+    padding:
+      32px 20px 25px;
+
+    border-radius:
+      18px;
+  }
+
+  .close-button {
+    top: 10px;
+    right: 14px;
+
+    font-size: 25px;
+  }
+
+  .modal h2 {
+    font-size:
+      28px;
+
+    padding-right:
+      25px;
+  }
+
+  .modal > p {
+    font-size:
+      13px;
   }
 
   .form-grid {
     grid-template-columns:
       1fr;
+
+    gap: 12px;
+
+    margin-top: 22px;
+  }
+
+  .form-grid input,
+  .form-grid select {
+    padding:
+      13px;
+
+    font-size:
+      14px;
+  }
+
+  .primary-button {
+    padding:
+      13px 18px;
+
+    font-size:
+      14px;
+  }
+
+
+  /* -----------------------------
+     MOBILE GLOW CONTROL
+  ----------------------------- */
+
+  .features-section::before,
+  .features-section::after,
+  .about-section::before,
+  .about-section::after {
+    opacity:
+      0.55;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .navbar {
+    padding:
+      0 15px;
+  }
+
+  .logo {
+    font-size:
+      21px;
+  }
+
+  .nav-button {
+    padding:
+      8px 11px;
+
+    font-size:
+      11px;
+  }
+
+  .hero-section {
+    padding:
+      50px 16px 60px;
+
+    gap:
+      35px;
+  }
+
+  .hero-content h1 {
+    font-size:
+      38px;
+  }
+
+  .hero-content > p {
+    font-size:
+      13px;
+  }
+
+  .hero-card {
+    padding:
+      27px 19px;
+  }
+
+  .hero-card h3 {
+    font-size:
+      23px;
+  }
+
+  .food-plate {
+    width:
+      95px;
+
+    height:
+      95px;
+
+    font-size:
+      43px;
+  }
+
+  .features-section,
+  .about-section {
+    padding:
+      65px 16px;
+  }
+
+  .section-heading h2,
+  .about-section h2 {
+    font-size:
+      29px;
   }
 
   .modal {
     padding:
-      32px 22px;
-  }
-
-  .about-points {
-    gap: 20px;
-  }
-
-  .app::before {
-    width: 650px;
-    height: 350px;
-  }
-
-  .app::after {
-    width: 650px;
-    height: 350px;
+      30px 17px 22px;
   }
 
 }
+
 
 /* =========================================================
    REDUCED MOTION
@@ -1598,6 +1967,8 @@ button {
   }
 
 }
+
+
 /* =========================================================
    DASHBOARD
    ADDITIONAL STYLES
@@ -2433,54 +2804,378 @@ button {
 }
 
 
+/* =========================================================
+   DASHBOARD MOBILE
+========================================================= */
+
 @media (max-width: 600px) {
 
   .dashboard-navbar {
+    height: 68px;
+
     padding:
-      0 5%;
+      0 20px;
   }
 
   .dashboard-logo {
-    font-size: 24px;
+    font-size: 22px;
+  }
+
+  .dashboard-nav-right {
+    gap: 8px;
   }
 
   .dashboard-user {
     display: none;
   }
 
+  .dashboard-back-button {
+    padding:
+      9px 13px;
+
+    font-size:
+      11px;
+  }
+
   .dashboard-content {
     padding:
-      45px 6% 70px;
+      42px 18px 65px;
+  }
+
+  .dashboard-welcome {
+    gap:
+      17px;
+
+    margin-bottom:
+      30px;
   }
 
   .dashboard-welcome h1 {
-    font-size: 38px;
+    font-size:
+      clamp(34px, 10vw, 40px);
+
+    line-height:
+      1.12;
+  }
+
+  .dashboard-welcome p {
+    margin-top:
+      11px;
+
+    font-size:
+      13px;
+
+    line-height:
+      1.65;
+  }
+
+  .dashboard-date {
+    width: 100%;
+
+    justify-content:
+      center;
+
+    padding:
+      10px 13px;
+
+    font-size:
+      11px;
   }
 
   .dashboard-summary {
     grid-template-columns:
       1fr;
+
+    gap:
+      13px;
+
+    margin-bottom:
+      18px;
+  }
+
+  .dashboard-card {
+    min-height:
+      145px;
+
+    padding:
+      21px;
+
+    border-radius:
+      16px;
+  }
+
+  .dashboard-card-icon {
+    font-size:
+      22px;
+
+    margin-bottom:
+      12px;
+  }
+
+  .dashboard-card > span {
+    font-size:
+      9px;
+  }
+
+  .dashboard-card h2 {
+    font-size:
+      25px;
+  }
+
+  .dashboard-card p {
+    font-size:
+      10px;
+  }
+
+  .dashboard-card .activity-value {
+    font-size:
+      16px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns:
+      1fr;
+
+    gap:
+      15px;
+
+    margin-bottom:
+      18px;
   }
 
   .dashboard-panel,
   .ai-panel,
   .meals-section {
-    padding: 23px;
+    padding:
+      21px;
+
+    border-radius:
+      17px;
+  }
+
+  .panel-heading {
+    margin-bottom:
+      27px;
   }
 
   .panel-heading h2,
   .meals-heading h2 {
-    font-size: 24px;
+    font-size:
+      23px;
+  }
+
+  .panel-icon {
+    width:
+      34px;
+
+    height:
+      34px;
+
+    font-size:
+      16px;
+  }
+
+  .nutrition-progress {
+    margin-bottom:
+      21px;
+  }
+
+  .progress-info span {
+    font-size:
+      12px;
+  }
+
+  .progress-info strong {
+    font-size:
+      11px;
+  }
+
+  .progress-bar {
+    height:
+      7px;
+  }
+
+  .ai-panel {
+    padding:
+      22px;
+  }
+
+  .ai-icon {
+    width:
+      40px;
+
+    height:
+      40px;
+
+    margin-bottom:
+      17px;
+
+    font-size:
+      18px;
+  }
+
+  .ai-panel h2 {
+    font-size:
+      24px;
+  }
+
+  .ai-panel p {
+    margin-top:
+      12px;
+
+    font-size:
+      12px;
+
+    line-height:
+      1.65;
+  }
+
+  .ai-button {
+    margin-top:
+      18px;
+
+    padding:
+      10px 14px;
+
+    font-size:
+      11px;
   }
 
   .meals-heading {
-    align-items: flex-start;
+    align-items:
+      flex-start;
 
-    gap: 15px;
+    gap:
+      12px;
+
+    margin-bottom:
+      20px;
   }
 
   .add-meal-button {
-    white-space: nowrap;
+    padding:
+      9px 12px;
+
+    white-space:
+      nowrap;
+
+    font-size:
+      11px;
+  }
+
+  .meal-list {
+    gap:
+      8px;
+  }
+
+  .meal-item {
+    gap:
+      11px;
+
+    padding:
+      12px;
+  }
+
+  .meal-icon {
+    width:
+      37px;
+
+    height:
+      37px;
+
+    font-size:
+      18px;
+
+    flex-shrink:
+      0;
+  }
+
+  .meal-info strong {
+    font-size:
+      13px;
+  }
+
+  .meal-info span {
+    font-size:
+      11px;
+  }
+
+  .meal-calories {
+    font-size:
+      10px;
+
+    white-space:
+      nowrap;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL DASHBOARD PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+  .dashboard-navbar {
+    padding:
+      0 15px;
+  }
+
+  .dashboard-logo {
+    font-size:
+      20px;
+  }
+
+  .dashboard-back-button {
+    padding:
+      8px 10px;
+
+    font-size:
+      10px;
+  }
+
+  .dashboard-content {
+    padding:
+      38px 15px 55px;
+  }
+
+  .dashboard-welcome h1 {
+    font-size:
+      33px;
+  }
+
+  .dashboard-welcome p {
+    font-size:
+      12px;
+  }
+
+  .dashboard-card {
+    padding:
+      19px;
+  }
+
+  .dashboard-panel,
+  .ai-panel,
+  .meals-section {
+    padding:
+      18px;
+  }
+
+  .panel-heading h2,
+  .meals-heading h2 {
+    font-size:
+      21px;
+  }
+
+  .meal-item {
+    padding:
+      10px;
+  }
+
+  .meal-calories {
+    display:
+      none;
   }
 
 }
