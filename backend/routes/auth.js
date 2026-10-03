@@ -6,8 +6,7 @@ const jwt = require("jsonwebtoken");
 
 const crypto = require("crypto");
 
-const nodemailer = require("nodemailer");
-
+const { Resend } = require("resend");
 
 const User = require("../models/User");
 
@@ -21,13 +20,7 @@ const router = express.Router();
 // EMAIL TRANSPORTER
 // ==========================
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 
 // ==========================
@@ -400,72 +393,72 @@ router.post("/forgot-password", async (req, res) => {
 
 
     const resetLink =
-      `http://localhost:5173/reset-password/${resetToken}`;
+  `https://nutri-ai-tth8.vercel.app/reset-password/${resetToken}`;
 
 
-    await transporter.sendMail({
-      from: `"NutriAI" <${process.env.EMAIL_USER}>`,
-      to: user.email,
-      subject: "NutriAI - Password Reset",
-      html: `
-        <div style="
-          font-family: Arial, sans-serif;
-          max-width: 600px;
-          margin: auto;
-          padding: 30px;
-          background-color: #111111;
-          color: #ffffff;
-          border-radius: 12px;
-        ">
+    await resend.emails.send({
+  from: "NutriAI <onboarding@resend.dev>",
+  to: user.email,
+  subject: "NutriAI - Password Reset",
+  html: `
+    <div style="
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: auto;
+      padding: 30px;
+      background-color: #111111;
+      color: #ffffff;
+      border-radius: 12px;
+    ">
 
-          <h2 style="margin-bottom: 10px;">
-            NutriAI Password Reset
-          </h2>
+      <h2 style="margin-bottom: 10px;">
+        NutriAI Password Reset
+      </h2>
 
-          <p>
-            Hello ${user.name},
-          </p>
+      <p>
+        Hello ${user.name},
+      </p>
 
-          <p>
-            We received a request to reset your NutriAI password.
-          </p>
+      <p>
+        We received a request to reset your NutriAI password.
+      </p>
 
-          <p>
-            Click the button below to create a new password:
-          </p>
+      <p>
+        Click the button below to create a new password:
+      </p>
 
-          <a
-            href="${resetLink}"
-            style="
-              display: inline-block;
-              padding: 12px 20px;
-              background-color: #ffffff;
-              color: #000000;
-              text-decoration: none;
-              border-radius: 8px;
-              font-weight: bold;
-              margin: 15px 0;
-            "
-          >
-            Reset Password
-          </a>
+      <a
+        href="${resetLink}"
+        style="
+          display: inline-block;
+          padding: 12px 20px;
+          background-color: #ffffff;
+          color: #000000;
+          text-decoration: none;
+          border-radius: 8px;
+          font-weight: bold;
+          margin: 15px 0;
+        "
+      >
+        Reset Password
+      </a>
 
-          <p>
-            This link will expire in <strong>15 minutes</strong>.
-          </p>
+      <p>
+        This link will expire in <strong>15 minutes</strong>.
+      </p>
 
-          <p>
-            If you did not request a password reset,
-            you can safely ignore this email.
-          </p>
+      <p>
+        If you did not request a password reset,
+        you can safely ignore this email.
+      </p>
 
-          <p style="margin-top: 25px;">
-            — NutriAI Team
-          </p>
+      <p style="margin-top: 25px;">
+        — NutriAI Team
+      </p>
 
-        </div>
-      `
-    });
+    </div>
+  `
+});
 
 
     res.json({
