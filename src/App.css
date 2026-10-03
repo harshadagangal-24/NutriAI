@@ -40,11 +40,27 @@ button {
   overflow-x: hidden;
 
   background:
+    radial-gradient(
+      900px 620px at -8% 8%,
+      rgba(55, 210, 125, 0.18),
+      transparent 62%
+    ),
+    radial-gradient(
+      760px 540px at 108% 20%,
+      rgba(196, 166, 83, 0.10),
+      transparent 64%
+    ),
+    radial-gradient(
+      900px 600px at 70% 108%,
+      rgba(20, 155, 125, 0.12),
+      transparent 66%
+    ),
     linear-gradient(
       135deg,
-      #06110b 0%,
-      #091b11 45%,
-      #07140d 100%
+      #050907 0%,
+      #08110d 42%,
+      #0a1511 70%,
+      #050807 100%
     );
 }
 
@@ -63,8 +79,9 @@ button {
 .organic-wave {
   position: absolute;
   pointer-events: none;
-  filter: blur(4px);
-  opacity: 0.75;
+  filter: blur(48px);
+  opacity: 0.85;
+  will-change: transform;
 }
 
 .wave-1 {
@@ -75,12 +92,11 @@ button {
   top: 90px;
 
   background:
-    linear-gradient(
-      115deg,
-      rgba(65, 255, 130, 0.35),
-      rgba(30, 220, 145, 0.25) 40%,
-      rgba(40, 170, 130, 0.12) 65%,
-      transparent 85%
+    radial-gradient(
+      ellipse at 35% 45%,
+      rgba(74, 235, 139, 0.22) 0%,
+      rgba(38, 170, 105, 0.12) 38%,
+      transparent 72%
     );
 
   border-radius:
@@ -101,12 +117,11 @@ button {
   top: 260px;
 
   background:
-    linear-gradient(
-      115deg,
-      rgba(80, 255, 180, 0.18),
-      rgba(70, 190, 230, 0.17) 40%,
-      rgba(130, 70, 255, 0.25) 72%,
-      transparent 90%
+    radial-gradient(
+      ellipse at 62% 45%,
+      rgba(45, 205, 170, 0.16) 0%,
+      rgba(98, 151, 108, 0.08) 38%,
+      transparent 74%
     );
 
   border-radius:
@@ -127,12 +142,11 @@ button {
   bottom: 70px;
 
   background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(70, 255, 150, 0.13),
-      rgba(100, 160, 255, 0.11),
-      transparent
+    radial-gradient(
+      ellipse at center,
+      rgba(180, 205, 116, 0.10),
+      rgba(52, 180, 130, 0.05) 42%,
+      transparent 72%
     );
 
   border-radius: 50%;
@@ -241,10 +255,24 @@ button {
 }
 
 .logo span {
+  color: #f4f8f4;
+}
+
+.logo span:nth-child(2) {
   color: #7dff9c;
 
   text-shadow:
     0 0 18px rgba(100, 255, 140, 0.45);
+}
+
+.logo span:nth-child(3) {
+  margin-left: 2px;
+  font-size: 13px;
+  line-height: 1;
+  display: inline-block;
+  transform: rotate(-8deg);
+  transform-origin: bottom center;
+  text-shadow: none;
 }
 
 .nav-links {
@@ -323,6 +351,12 @@ button {
 
   max-width: 600px;
 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+
   animation:
     heroAppear 0.9s ease-out both;
 }
@@ -346,6 +380,8 @@ button {
 .badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  align-self: center;
   gap: 8px;
 
   padding: 8px 15px;
@@ -455,6 +491,8 @@ button {
   margin-top: 26px;
 
   max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
 
   color: #a3ada7;
 
@@ -1974,17 +2012,96 @@ button {
    ADDITIONAL STYLES
 ========================================================= */
 
+
+.dashboard::before {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  z-index: 0;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse 38% 28% at 8% 14%,
+      rgba(68, 245, 143, 0.16),
+      transparent 72%
+    ),
+    radial-gradient(
+      ellipse 32% 26% at 92% 20%,
+      rgba(190, 170, 95, 0.09),
+      transparent 74%
+    ),
+    radial-gradient(
+      ellipse 40% 30% at 74% 86%,
+      rgba(35, 205, 155, 0.11),
+      transparent 72%
+    );
+
+  filter: blur(35px);
+  opacity: 0.95;
+  transform: translate3d(0, 0, 0);
+  animation: premiumAmbientDrift 18s ease-in-out infinite alternate;
+}
+
+.dashboard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      115deg,
+      transparent 0%,
+      rgba(87, 220, 132, 0.035) 28%,
+      transparent 48%,
+      rgba(193, 168, 91, 0.025) 72%,
+      transparent 100%
+    );
+
+  opacity: 0.9;
+}
+
+@keyframes premiumAmbientDrift {
+  0% {
+    transform: translate3d(-2%, -1%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, 2%, 0) scale(1.04);
+  }
+  100% {
+    transform: translate3d(-1%, 4%, 0) scale(1.02);
+  }
+}
+
 .dashboard {
   position: relative;
   min-height: 100vh;
   overflow-x: hidden;
 
   background:
+    radial-gradient(
+      820px 600px at 2% 10%,
+      rgba(48, 220, 125, 0.17),
+      transparent 62%
+    ),
+    radial-gradient(
+      720px 520px at 98% 18%,
+      rgba(203, 171, 88, 0.09),
+      transparent 64%
+    ),
+    radial-gradient(
+      900px 620px at 74% 100%,
+      rgba(22, 160, 126, 0.12),
+      transparent 68%
+    ),
     linear-gradient(
       135deg,
-      #06110b 0%,
-      #091b11 45%,
-      #07140d 100%
+      #050907 0%,
+      #08110d 42%,
+      #0a1511 70%,
+      #050807 100%
     );
 
   color: #f5f7f5;
@@ -2027,7 +2144,11 @@ button {
   color: #f4f8f4;
 }
 
-.dashboard-logo span {
+.dashboard-logo span:first-child {
+  color: #ffffff;
+}
+
+.dashboard-logo span:nth-child(2) {
   color: #7dff9c;
 
   text-shadow:
@@ -3178,4 +3299,382 @@ button {
       none;
   }
 
+}
+
+/* =========================================================
+   NUTRIAI DASHBOARD — LAYOUT FIX ONLY
+   No redesign. No color changes. No content changes.
+========================================================= */
+
+.dashboard-page {
+  width: 100% !important;
+  max-width: 1400px !important;
+  margin: 0 auto !important;
+  padding: 70px 7% 90px !important;
+  box-sizing: border-box !important;
+  display: block !important;
+  position: relative;
+  min-width: 0 !important;
+  text-align: left;
+}
+
+.dashboard-page > * {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.dashboard-profile-summary {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+  margin-bottom: 35px !important;
+}
+
+.dashboard-metrics-grid {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 20px !important;
+  margin-bottom: 35px !important;
+}
+
+.dashboard-profile-summary .feature-card,
+.dashboard-metrics-grid .feature-card {
+  min-width: 0 !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.dashboard-two-column-row {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.85fr) !important;
+  gap: 24px !important;
+  margin: 0 0 32px !important;
+  box-sizing: border-box !important;
+}
+
+.dashboard-two-column-row > .feature-card {
+  width: 100% !important;
+  min-width: 0 !important;
+  margin-bottom: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.dashboard-insight-card,
+.dashboard-analytics-card,
+.dashboard-daily-plan-card,
+.dashboard-meal-tracker-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  margin-bottom: 32px !important;
+}
+
+.dashboard-daily-plan-card > div[style*="grid-template-columns"],
+.dashboard-analytics-card > div[style*="grid-template-columns"] {
+  min-width: 0 !important;
+}
+
+@media (max-width: 1050px) {
+  .dashboard-page {
+    padding: 55px 5% 75px !important;
+  }
+
+  .dashboard-profile-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .dashboard-metrics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .dashboard-two-column-row {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .dashboard-page {
+    padding: 42px 18px 65px !important;
+  }
+
+  .dashboard-profile-summary,
+  .dashboard-metrics-grid,
+  .dashboard-two-column-row {
+    grid-template-columns: 1fr !important;
+    gap: 15px !important;
+  }
+
+  .dashboard-two-column-row > .feature-card {
+    margin-bottom: 0 !important;
+  }
+}
+
+
+/* =========================================================
+   NUTRIAI — MEAL RECOMMENDATIONS POLISH
+   Keeps the exact 2 x 2 layout; improves hierarchy only.
+========================================================= */
+
+.meal-recommendations-grid {
+  width: 100% !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+}
+
+.meal-recommendation-card {
+  position: relative !important;
+  overflow: hidden !important;
+  min-height: 300px !important;
+  padding: 22px !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(126, 240, 148, 0.13) !important;
+  background:
+    radial-gradient(circle at 90% 5%, rgba(114, 237, 145, 0.09), transparent 32%),
+    linear-gradient(145deg, rgba(24, 51, 36, 0.92), rgba(13, 31, 22, 0.96)) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.025), 0 12px 28px rgba(0,0,0,0.10) !important;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease !important;
+}
+
+.meal-recommendation-card:hover {
+  transform: translateY(-5px) !important;
+  border-color: rgba(126, 240, 148, 0.30) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.035), 0 18px 34px rgba(0,0,0,0.18), 0 0 24px rgba(114,237,145,0.06) !important;
+}
+
+/* Food emoji becomes a small visual anchor instead of floating alone. */
+.meal-recommendation-card > div:first-child {
+  width: 54px !important;
+  height: 54px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-bottom: 16px !important;
+  border-radius: 16px !important;
+  background: rgba(114, 237, 145, 0.09) !important;
+  border: 1px solid rgba(114, 237, 145, 0.10) !important;
+  font-size: 30px !important;
+}
+
+/* Keep the ML badge compact instead of stretching across the card. */
+.meal-recommendation-card > span {
+  width: fit-content !important;
+  max-width: 100% !important;
+  align-self: flex-start !important;
+}
+
+.meal-recommendation-card > span:nth-of-type(1) {
+  padding: 5px 10px !important;
+  border: 1px solid rgba(114,237,145,0.12) !important;
+  background: rgba(114,237,145,0.10) !important;
+  border-radius: 999px !important;
+}
+
+.meal-recommendation-card > span:nth-of-type(2) {
+  margin-top: 14px !important;
+  padding: 0 !important;
+}
+
+.meal-recommendation-card h3 {
+  margin-top: 7px !important;
+  margin-bottom: 0 !important;
+  font-size: 19px !important;
+  line-height: 1.35 !important;
+  letter-spacing: -0.2px !important;
+}
+
+.meal-recommendation-card p {
+  color: #a4b0a8 !important;
+  line-height: 1.55 !important;
+}
+
+/* Nutrition values read as two small pills. */
+.meal-recommendation-card > div:nth-of-type(2) {
+  gap: 9px !important;
+  margin-top: 18px !important;
+}
+
+.meal-recommendation-card > div:nth-of-type(2) > span {
+  padding: 7px 10px !important;
+  border-radius: 10px !important;
+  background: rgba(114,237,145,0.07) !important;
+  border: 1px solid rgba(114,237,145,0.09) !important;
+  white-space: nowrap !important;
+}
+
+.meal-recommendation-card > p:last-child {
+  margin-top: auto !important;
+  padding-top: 18px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+@media (max-width: 700px) {
+  .meal-recommendations-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .meal-recommendation-card {
+    min-height: 285px !important;
+  }
+}
+
+
+/* =========================================================
+   NUTRIAI — MEAL RECOMMENDATIONS EMOJI FIX
+   Keeps the existing 2 x 2 layout and design.
+   Only fixes the new time-of-day + food emoji arrangement.
+========================================================= */
+
+.meal-recommendations-grid {
+  width: 100% !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 18px !important;
+}
+
+.meal-recommendation-card {
+  position: relative !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  min-height: 300px !important;
+  padding: 22px !important;
+  box-sizing: border-box !important;
+  border-radius: 20px !important;
+}
+
+/* Top row: meal type on the left + time-of-day emoji on the right */
+.meal-recommendation-card > div:first-child {
+  width: 100% !important;
+  height: 52px !important;
+  min-height: 52px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+}
+
+/* Meal type text */
+.meal-recommendation-card > div:first-child > span:first-child {
+  color: #72ed91 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+}
+
+/* Time-of-day emoji box */
+.meal-recommendation-card > div:first-child > span:last-child {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 14px !important;
+  background: rgba(114,237,145,0.10) !important;
+  border: 1px solid rgba(114,237,145,0.18) !important;
+  font-size: 25px !important;
+  line-height: 1 !important;
+}
+
+/* ML badge */
+.meal-recommendation-card > span:first-of-type {
+  width: fit-content !important;
+  margin-top: 12px !important;
+  padding: 5px 10px !important;
+  border-radius: 999px !important;
+  background: rgba(114,237,145,0.10) !important;
+  border: 1px solid rgba(114,237,145,0.12) !important;
+  color: #72ed91 !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.8px !important;
+}
+
+/* Food emoji box */
+.meal-recommendation-card > div:nth-of-type(2) {
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-top: 14px !important;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+  border-radius: 16px !important;
+  background: rgba(255,255,255,0.045) !important;
+  border: 1px solid rgba(255,255,255,0.07) !important;
+  font-size: 34px !important;
+  line-height: 1 !important;
+}
+
+/* Meal name */
+.meal-recommendation-card h3 {
+  margin-top: 10px !important;
+  margin-bottom: 0 !important;
+  font-size: 19px !important;
+  line-height: 1.35 !important;
+}
+
+/* Description */
+.meal-recommendation-card h3 + p {
+  margin-top: 10px !important;
+  color: #a4b0a8 !important;
+  line-height: 1.55 !important;
+}
+
+/* Nutrition row is the third div */
+.meal-recommendation-card > div:nth-of-type(3) {
+  display: flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  margin-top: 18px !important;
+}
+
+.meal-recommendation-card > div:nth-of-type(3) > span {
+  padding: 7px 10px !important;
+  border-radius: 10px !important;
+  background: rgba(114,237,145,0.07) !important;
+  border: 1px solid rgba(114,237,145,0.09) !important;
+  white-space: nowrap !important;
+}
+
+/* View details */
+.meal-recommendation-card > p:last-child {
+  margin-top: auto !important;
+  padding-top: 18px !important;
+  color: #72ed91 !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+
+/* Keep 2 x 2 on desktop/tablet; stack only on small mobile */
+@media (max-width: 700px) {
+  .meal-recommendations-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .meal-recommendation-card {
+    min-height: 285px !important;
+  }
+}
+.logo .nutri-text {
+  color: #ffffff !important;
+}
+
+.logo .ai-text {
+  color: #5DC43C !important;
 }

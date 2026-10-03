@@ -1,0 +1,356 @@
+/* ============================================================
+   AUTH PAGE
+   ============================================================ */
+
+.auth-page {
+  min-height: 100vh;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 40px 24px;
+  box-sizing: border-box;
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(111, 247, 161, 0.08),
+      transparent 38%
+    ),
+    linear-gradient(135deg, #061711, #0b251d 55%, #071812);
+}
+
+
+/* ============================================================
+   AUTH CARD
+   ============================================================ */
+
+.auth-card {
+  width: 100%;
+  max-width: 500px;
+
+  padding: 52px 54px;
+
+  box-sizing: border-box;
+
+  background: rgba(19, 42, 34, 0.78);
+
+  border: 1px solid rgba(255, 255, 255, 0.13);
+
+  border-radius: 28px;
+
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+
+  box-shadow:
+    0 25px 65px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  text-align: center;
+}
+
+
+/* ============================================================
+   NUTRIAI LOGO
+   ============================================================ */
+
+.logo {
+  width: 100%;
+
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+
+  margin: 0 auto 28px;
+
+  color: #ffffff;
+
+  font-size: 40px;
+  font-weight: 800;
+
+  letter-spacing: -1.5px;
+  line-height: 1;
+}
+
+.logo span:nth-child(2) {
+  color: #6ff7a1;
+}
+
+.logo span:last-child {
+  margin-left: 6px !important;
+  font-size: 17px !important;
+}
+
+
+/* ============================================================
+   HEADING
+   ============================================================ */
+
+.auth-card h2 {
+  color: #ffffff;
+
+  font-size: 31px;
+  font-weight: 750;
+
+  margin: 0 0 12px;
+
+  letter-spacing: -0.5px;
+}
+
+
+/* ============================================================
+   SUBTITLE
+   ============================================================ */
+
+.auth-subtitle {
+  color: #aebfba;
+
+  font-size: 15px;
+
+  margin: 0 0 34px;
+
+  line-height: 1.6;
+}
+
+
+/* ============================================================
+   FORM
+   ============================================================ */
+
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+
+  gap: 17px;
+}
+
+
+/* ============================================================
+   INPUTS + SELECTS
+   ============================================================ */
+
+.auth-card input,
+.auth-card select {
+  width: 100%;
+  height: 54px;
+
+  padding: 0 18px;
+
+  box-sizing: border-box;
+
+  border: 1px solid rgba(255, 255, 255, 0.14);
+
+  border-radius: 13px;
+
+  background: rgba(255, 255, 255, 0.075);
+
+  color: #ffffff;
+
+  font-size: 15px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.auth-card input::placeholder {
+  color: #94a8a1;
+}
+
+.auth-card input:hover,
+.auth-card select:hover {
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.auth-card input:focus,
+.auth-card select:focus {
+  border-color: #6ff7a1;
+
+  background: rgba(255, 255, 255, 0.09);
+
+  box-shadow:
+    0 0 0 3px rgba(111, 247, 161, 0.1);
+}
+
+
+/* ============================================================
+   SELECT OPTIONS
+   ============================================================ */
+
+.auth-card select option {
+  background: #10241d;
+  color: #ffffff;
+}
+
+
+/* ============================================================
+   LOGIN / REGISTER BUTTON
+   ============================================================ */
+
+.auth-button {
+  width: 100%;
+  height: 55px;
+
+  margin-top: 7px;
+
+  border: none;
+  border-radius: 13px;
+
+  background: linear-gradient(
+    100deg,
+    #6ff58c,
+    #62dfcf
+  );
+
+  color: #061711;
+
+  font-size: 17px;
+  font-weight: 750;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.auth-button:hover {
+  transform: translateY(-2px);
+
+  filter: brightness(1.04);
+
+  box-shadow:
+    0 10px 28px rgba(100, 223, 207, 0.22);
+}
+
+.auth-button:active {
+  transform: translateY(0);
+}
+
+
+/* ============================================================
+   FORGOT PASSWORD
+   ============================================================ */
+
+.auth-card form + div {
+  margin-top: 17px !important;
+  margin-bottom: 0 !important;
+}
+
+.auth-card form + div button {
+  transition: color 0.2s ease;
+}
+
+.auth-card form + div button:hover {
+  color: #6ff7a1 !important;
+}
+
+
+/* ============================================================
+   LOGIN / REGISTER SWITCH
+   ============================================================ */
+
+.auth-switch {
+  margin-top: 34px;
+
+  color: #aebfba;
+
+  font-size: 15px;
+
+  line-height: 1.5;
+}
+
+.auth-switch button {
+  border: none;
+
+  background: none;
+
+  color: #6ff7a1;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  margin-left: 6px;
+
+  padding: 0;
+
+  font-size: 15px;
+
+  transition: color 0.2s ease;
+}
+
+.auth-switch button:hover {
+  color: #8affb0;
+  text-decoration: underline;
+}
+
+
+/* ============================================================
+   SUCCESS / ERROR MESSAGES
+   ============================================================ */
+
+.success-message {
+  color: #6ff7a1;
+
+  font-size: 14px;
+
+  margin: 17px 0 0;
+
+  line-height: 1.5;
+}
+
+.error-message {
+  color: #ff7b7b;
+
+  font-size: 14px;
+
+  margin: 17px 0 0;
+
+  line-height: 1.5;
+}
+
+
+/* ============================================================
+   MOBILE
+   ============================================================ */
+
+@media (max-width: 500px) {
+
+  .auth-page {
+    padding: 25px 14px;
+  }
+
+  .auth-card {
+    max-width: 100%;
+
+    padding: 40px 24px;
+
+    border-radius: 24px;
+  }
+
+  .logo {
+    font-size: 34px;
+    margin-bottom: 25px;
+  }
+
+  .auth-card h2 {
+    font-size: 27px;
+  }
+
+  .auth-subtitle {
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+
+  .auth-card input,
+  .auth-card select {
+    height: 52px;
+  }
+}

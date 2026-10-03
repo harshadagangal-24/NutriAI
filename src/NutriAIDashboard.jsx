@@ -171,35 +171,12 @@ const getRandomGoalTip = (goal) => {
 
   return tips[newIndex];
 };
-const cleanFoodName = (name) => {
-  if (!name) return "";
 
-  let cleaned = String(name)
-    .replace(/\([^)]*\)/g, "")
-    .split("/")[0]
-    .replace(/\s+/g, " ")
-    .trim();
-
-  const corrections = {
-    omlet: "omelette",
-    omlette: "omelette",
-    pakoda: "pakora",
-  };
-
-  cleaned = cleaned
-    .split(" ")
-    .map((word) => corrections[word.toLowerCase()] || word)
-    .join(" ");
-
-  return cleaned
-    .toLowerCase()
-    .replace(/\b\w/g, (char) => char.toUpperCase());
-};
-function App() {
+function NutriAIDashboard({ initialUser = null, onLogout }) {
   /* ================= AUTHENTICATION ================= */
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(Boolean(initialUser));
+  const [loggedInUser, setLoggedInUser] = useState(initialUser || null);
 
   /* ================= PASSWORD RESET ================= */
 
@@ -271,16 +248,15 @@ function App() {
   /* ================= USER DATA ================= */
 
   const [formData, setFormData] = useState({
-  name: "",
-  age: "",
-  gender: "",
-  height: "",
-  weight: "",
-  activity: "",
-  goal: [],
-  foodPreference: "",
-  allergies: "",
-});
+    name: initialUser?.name || "",
+    age: initialUser?.age || "",
+    gender: initialUser?.gender || "",
+    height: initialUser?.height || "",
+    weight: initialUser?.weight || "",
+    activity: initialUser?.activity || "",
+    goal: normalizeGoals(initialUser?.goals || initialUser?.goal),
+    foodPreference: initialUser?.foodPreference || "",
+  });
 
   /* ================= MEAL DATA ================= */
 
@@ -510,6 +486,40 @@ function App() {
     return () => clearInterval(interval);
   }, [mealReminders]);
 
+  // Initialize the dashboard from the user authenticated by the lightweight App wrapper.
+  useEffect(() => {
+    if (!initialUser) return;
+
+    const goals = normalizeGoals(initialUser.goals || initialUser.goal);
+
+    setLoggedInUser(initialUser);
+    setFormData({
+      name: initialUser.name || "",
+      age: initialUser.age || "",
+      gender: initialUser.gender || "",
+      height: initialUser.height || "",
+      weight: initialUser.weight || "",
+      activity: initialUser.activity || "",
+      goal: goals,
+      foodPreference: initialUser.foodPreference || "",
+    });
+
+    const profileComplete = Boolean(
+      initialUser.name &&
+      initialUser.age &&
+      initialUser.gender &&
+      initialUser.height &&
+      initialUser.weight &&
+      initialUser.activity &&
+      goals.length > 0 &&
+      initialUser.foodPreference
+    );
+
+    setShowDashboard(profileComplete);
+    setShowModal(!profileComplete);
+    setStep(1);
+  }, [initialUser]);
+
   // Change the tip whenever the user's nutrition goal changes.
   useEffect(() => {
     setDailyTip(getRandomGoalTip(formData.goal));
@@ -559,7 +569,6 @@ function App() {
           goal: getPrimaryGoal(user.goals?.length ? user.goals : user.goal),
           goals: normalizeGoals(user.goals?.length ? user.goals : user.goal),
           foodPreference: user.foodPreference || "",
-          allergies: user.allergies || "",
         })
       );
     } catch (error) {
@@ -699,13 +708,12 @@ function App() {
       const results = await Promise.all(
         mealTypes.map((mealType) =>
           getFoodRecommendations({
-  nutrition,
-  foodPreference: preference,
-  mealType,
-  goal: goalText,
-  goals: selectedGoals,
-  allergies: profileData.allergies || "",
-})
+            nutrition,
+            foodPreference: preference,
+            mealType,
+            goal: goalText,
+            goals: selectedGoals,
+          })
         )
       );
 
@@ -799,7 +807,6 @@ function App() {
         goal: getPrimaryGoal(selectedGoals),
         goals: selectedGoals,
         foodPreference: updatedData.foodPreference,
-        allergies: updatedData.allergies || "",
       });
 
       const savedUser = {
@@ -849,7 +856,11 @@ function App() {
       return;
     }
 
-    loadMLRecommendations(formData);
+    const timer = setTimeout(() => {
+      loadMLRecommendations(formData);
+    }, 1200);
+
+    return () => clearTimeout(timer);
   }, [
     isLoggedIn,
     showDashboard,
@@ -964,21 +975,16 @@ PREPARATION:
 
 Keep it concise and suitable for a home cook. Do not include nutrition values, medical advice, or extra sections.`,
         profile: {
-  name: formData.name,
-  age: formData.age,
-  gender: formData.gender,
-  height: formData.height,
-  weight: formData.weight,
-  activity: formData.activity,
-  goal: getPrimaryGoal(formData.goal),
-  goals: normalizeGoals(formData.goal),
-  allergies: formData.allergies || profileSettings.allergies || "",
-  dailyCalories,
-  proteinTarget,
-  waterTarget,
-  bmi,
-  bmiCategory,
-},
+          name: formData.name,
+          age: formData.age,
+          gender: formData.gender,
+          height: formData.height,
+          weight: formData.weight,
+          activity: formData.activity,
+          goal: getPrimaryGoal(formData.goal),
+          goals: normalizeGoals(formData.goal),
+          foodPreference: formData.foodPreference,
+        },
       });
 
       const recipeText = response.data.reply || "";
@@ -1080,6 +1086,7 @@ Keep it concise and suitable for a home cook. Do not include nutrition values, m
     setIsLoggedIn(false);
     setLoggedInUser(null);
     setShowLogoutConfirm(false);
+    onLogout?.();
   };
 
   const openProfile = () => {
@@ -1106,7 +1113,6 @@ Keep it concise and suitable for a home cook. Do not include nutrition values, m
         goal: getPrimaryGoal(formData.goal),
         goals: normalizeGoals(formData.goal),
         foodPreference: formData.foodPreference,
-        allergies: profileSettings.allergies || "",
       });
 
       const updatedUser = {
@@ -1125,7 +1131,6 @@ Keep it concise and suitable for a home cook. Do not include nutrition values, m
           response.data.user?.foodPreference ||
           formData.foodPreference ||
           "",
-          allergies: response.data.user?.allergies || "",
       };
 
       setLoggedInUser(updatedUser);
@@ -1156,19 +1161,18 @@ Keep it concise and suitable for a home cook. Do not include nutrition values, m
   };
 
   const handlePersonalInfoSave = async () => {
-  try {
-    const response = await API.put("/auth/profile", {
-      name: formData.name,
-      age: Number(formData.age),
-      gender: formData.gender,
-      height: Number(formData.height),
-      weight: Number(formData.weight),
-      activity: formData.activity,
-      goal: getPrimaryGoal(formData.goal),
-      goals: normalizeGoals(formData.goal),
-      foodPreference: formData.foodPreference,
-      allergies: profileSettings.allergies || "",
-    });
+    try {
+      const response = await API.put("/auth/profile", {
+        name: formData.name,
+        age: Number(formData.age),
+        gender: formData.gender,
+        height: Number(formData.height),
+        weight: Number(formData.weight),
+        activity: formData.activity,
+        goal: getPrimaryGoal(formData.goal),
+        goals: normalizeGoals(formData.goal),
+        foodPreference: formData.foodPreference,
+      });
 
       const updatedUser = {
         ...response.data.user,
@@ -1183,13 +1187,9 @@ Keep it concise and suitable for a home cook. Do not include nutrition values, m
           formData.goal
         ),
         foodPreference:
-  response.data.user?.foodPreference ||
-  formData.foodPreference ||
-  "",
-allergies:
-  response.data.user?.allergies ||
-  profileSettings.allergies ||
-  "",
+          response.data.user?.foodPreference ||
+          formData.foodPreference ||
+          "",
       };
 
       setLoggedInUser(updatedUser);
@@ -1205,7 +1205,6 @@ allergies:
         activity: updatedUser.activity,
         goal: normalizeGoals(updatedUser.goals || updatedUser.goal),
         foodPreference: updatedUser.foodPreference || "",
-        allergies: updatedUser.allergies || "",
       }));
       setEditingPersonalInfo(false);
       alert("Personal information updated successfully!");
@@ -1227,7 +1226,6 @@ allergies:
         goal: getPrimaryGoal(formData.goal),
         goals: normalizeGoals(formData.goal),
         foodPreference: formData.foodPreference,
-        allergies: profileSettings.allergies || "",
       });
 
       const updatedUser = {
@@ -1243,13 +1241,9 @@ allergies:
           formData.goal
         ),
         foodPreference:
-  response.data.user?.foodPreference ||
-  formData.foodPreference ||
-  "",
-allergies:
-  response.data.user?.allergies ||
-  profileSettings.allergies ||
-  "",
+          response.data.user?.foodPreference ||
+          formData.foodPreference ||
+          "",
       };
 
       setLoggedInUser(updatedUser);
@@ -1259,7 +1253,6 @@ allergies:
         ...previous,
         goal: normalizeGoals(updatedUser.goals || updatedUser.goal),
         foodPreference: updatedUser.foodPreference,
-        allergies: updatedUser.allergies || "",
       }));
       setEditingFoodPreference(false);
       alert("Food preference updated successfully!");
@@ -1428,21 +1421,20 @@ allergies:
       const response = await API.post("/ai/chat", {
         message: `${nutritionInstruction}\n\nConversation:\n${conversation}`,
         profile: {
-  name: formData.name,
-  age: formData.age,
-  gender: formData.gender,
-  height: formData.height,
-  weight: formData.weight,
-  activity: formData.activity,
-  goal: getPrimaryGoal(formData.goal),
-  goals: normalizeGoals(formData.goal),
-  allergies: formData.allergies || profileSettings.allergies || "",
-  dailyCalories,
-  proteinTarget,
-  waterTarget,
-  bmi,
-  bmiCategory,
-},
+          name: formData.name,
+          age: formData.age,
+          gender: formData.gender,
+          height: formData.height,
+          weight: formData.weight,
+          activity: formData.activity,
+          goal: getPrimaryGoal(formData.goal),
+          goals: normalizeGoals(formData.goal),
+          dailyCalories,
+          proteinTarget,
+          waterTarget,
+          bmi,
+          bmiCategory,
+        },
       });
 
       setChatMessages((previous) => [
@@ -1916,7 +1908,7 @@ allergies:
   if (!isLoggedIn) {
     return (
       <Auth
-        onLogin={(user) => {
+          onLogin={(user) => {
           const savedProfile = getSavedLocalProfile(user);
 
           // Prefer values returned by the backend. Use local storage only
@@ -1953,7 +1945,6 @@ allergies:
             activity: mergedUser.activity || "",
             goal: normalizeGoals(mergedUser.goals || mergedUser.goal),
             foodPreference: mergedUser.foodPreference || "",
-            
           });
 
           setIsLoggedIn(true);
@@ -3654,60 +3645,46 @@ allergies:
         }}
       >
         <nav
-  style={{
-    height: "76px",
-    position: "sticky",
-    top: 0,
-    zIndex: 20,
-    width: "100%",
-    boxSizing: "border-box",
-    borderBottom:
-      profileSettings.theme === "light"
-        ? "1px solid #d9e3dc"
-        : "1px solid #222222",
-    background:
-      profileSettings.theme === "light"
-        ? "rgba(255,255,255,0.90)"
-        : "rgba(0,0,0,0.55)",
-    backdropFilter: "blur(16px)",
-  }}
->
-  <NutriAILogo
-    style={{
-      position: "absolute",
-      left: "35px",
-      top: "50%",
-      transform: "translateY(-50%)",
-      margin: 0,
-    }}
-  />
+          style={{
+            height: "76px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "0 8%",
+            borderBottom:
+              profileSettings.theme === "light"
+                ? "1px solid #d9e3dc"
+                : "1px solid #222222",
+            background:
+              profileSettings.theme === "light"
+                ? "rgba(255,255,255,0.90)"
+                : "rgba(0,0,0,0.55)",
+            backdropFilter: "blur(16px)",
+            position: "sticky",
+            top: 0,
+            zIndex: 20,
+          }}
+        >
+          <NutriAILogo />
 
-  <button
-    onClick={closeProfile}
-    style={{
-      position: "absolute",
-      right: "35px",
-      top: "50%",
-      transform: "translateY(-50%)",
-      background: "transparent",
-      color:
-        profileSettings.theme === "light"
-          ? "#17221b"
-          : "#ffffff",
-      border:
-        profileSettings.theme === "light"
-          ? "1px solid #cbd8cf"
-          : "1px solid #333333",
-      borderRadius: "10px",
-      padding: "10px 18px",
-      cursor: "pointer",
-      fontSize: "14px",
-      whiteSpace: "nowrap",
-    }}
-  >
-    ← Dashboard
-  </button>
-</nav>
+          <button
+            onClick={closeProfile}
+            style={{
+              background: "transparent",
+              color: profileSettings.theme === "light" ? "#17221b" : "#ffffff",
+              border:
+                profileSettings.theme === "light"
+                  ? "1px solid #cbd8cf"
+                  : "1px solid #333333",
+              borderRadius: "10px",
+              padding: "10px 18px",
+              cursor: "pointer",
+              fontSize: "14px",
+            }}
+          >
+            ← Dashboard
+          </button>
+        </nav>
 
         <main
           style={{
@@ -4112,251 +4089,76 @@ allergies:
           </section>
 
           {/* NOTIFICATIONS */}
-<section
-  style={{
-    ...settingsCard,
-    padding: "26px",
-  }}
->
-  {/* Header */}
-  <div
-    style={{
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "flex-start",
-      gap: "20px",
-      marginBottom: "22px",
-    }}
-  >
-    <div>
-      <h2
-        style={{
-          margin: 0,
-          fontSize: "22px",
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-        }}
-      >
-        🔔 Notifications
-      </h2>
-
-      <p
-        style={{
-          margin: "7px 0 0",
-          color:
-            profileSettings.theme === "light"
-              ? "#68756d"
-              : "#7f8b84",
-          fontSize: "14px",
-        }}
-      >
-        Control your meal reminder notifications.
-      </p>
-    </div>
-  </div>
-
-  {/* Master notification control */}
-  <div
-    style={{
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      gap: "20px",
-      padding: "18px 20px",
-      borderRadius: "14px",
-      background:
-        profileSettings.theme === "light"
-          ? "#f7faf8"
-          : "linear-gradient(135deg, rgba(114,237,145,0.08), rgba(255,255,255,0.025))",
-      border:
-        profileSettings.theme === "light"
-          ? "1px solid #d9e3dc"
-          : "1px solid rgba(114,237,145,0.14)",
-      marginBottom: "20px",
-    }}
-  >
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "13px",
-      }}
-    >
-      <div
-        style={{
-          width: "42px",
-          height: "42px",
-          borderRadius: "12px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "rgba(114,237,145,0.10)",
-          fontSize: "20px",
-        }}
-      >
-        🔔
-      </div>
-
-      <div>
-        <strong
-          style={{
-            display: "block",
-            fontSize: "16px",
-            color:
-              profileSettings.theme === "light"
-                ? "#17221b"
-                : "#f4f8f4",
-          }}
-        >
-          Meal reminder notifications
-        </strong>
-
-        <span
-          style={{
-            display: "block",
-            marginTop: "4px",
-            fontSize: "13px",
-            color:
-              profileSettings.notifications
-                ? "#72ed91"
-                : "#7f8b84",
-          }}
-        >
-          {profileSettings.notifications
-            ? "Notifications are enabled"
-            : "Notifications are disabled"}
-        </span>
-      </div>
-    </div>
-
-    <button
-      onClick={
-        profileSettings.notifications
-          ? () => updateProfileSetting("notifications", false)
-          : requestNotificationPermission
-      }
-      style={{
-        minWidth: "72px",
-        height: "38px",
-        borderRadius: "20px",
-        border: "none",
-        cursor: "pointer",
-        fontWeight: "700",
-        background: profileSettings.notifications
-          ? "#72ed91"
-          : "rgba(114,237,145,0.10)",
-        color: profileSettings.notifications
-          ? "#07140d"
-          : "#72ed91",
-        boxShadow: profileSettings.notifications
-          ? "0 0 16px rgba(114,237,145,0.18)"
-          : "none",
-      }}
-    >
-      {profileSettings.notifications ? "ON" : "OFF"}
-    </button>
-  </div>
-
-  {/* Meal reminders */}
-  <div
-    style={{
-      display: "grid",
-      gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-      gap: "14px",
-    }}
-  >
-    {mealReminders.map((reminder) => {
-      const icon =
-        reminder.type === "Breakfast"
-          ? "🌅"
-          : reminder.type === "Lunch"
-          ? "☀️"
-          : reminder.type === "Snack"
-          ? "🌇"
-          : "🌙";
-
-      return (
-        <div
-          key={reminder.id}
-          style={{
-            padding: "18px",
-            borderRadius: "14px",
-            background:
-              profileSettings.theme === "light"
-                ? "#f7faf8"
-                : "#101713",
-            border:
-              profileSettings.theme === "light"
-                ? "1px solid #d9e3dc"
-                : "1px solid rgba(255,255,255,0.07)",
-            transition: "all 0.2s ease",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: "12px",
-            }}
-          >
-            <div
+          <section style={settingsCard}>
+            <h2 style={{ margin: 0, fontSize: "22px" }}>🔔 Notifications</h2>
+            <p
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "12px",
+                margin: "6px 0 18px",
+                color: profileSettings.theme === "light" ? "#68756d" : "#777777",
+                fontSize: "14px",
               }}
             >
-              <div
+              Control your meal reminder notifications.
+            </p>
+
+            <div style={settingRow}>
+              <div>
+                <strong>Meal reminder notifications</strong>
+                <div style={{ color: "#7f8b84", fontSize: "13px", marginTop: "4px" }}>
+                  {profileSettings.notifications ? "Enabled" : "Disabled"}
+                </div>
+              </div>
+              <button
+                onClick={
+                  profileSettings.notifications
+                    ? () => updateProfileSetting("notifications", false)
+                    : requestNotificationPermission
+                }
                 style={{
-                  width: "42px",
-                  height: "42px",
-                  borderRadius: "12px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  background: "rgba(114,237,145,0.08)",
-                  fontSize: "20px",
+                  ...settingButton,
+                  background: profileSettings.notifications
+                    ? "#72ed91"
+                    : "rgba(114,237,145,0.08)",
+                  color: profileSettings.notifications ? "#07140d" : "#72ed91",
                 }}
               >
-                {icon}
-              </div>
-
-              <div>
-                <strong
-                  style={{
-                    display: "block",
-                    fontSize: "16px",
-                    color:
-                      profileSettings.theme === "light"
-                        ? "#17221b"
-                        : "#f4f8f4",
-                  }}
-                >
-                  {reminder.type}
-                </strong>
-
-                <span
-                  style={{
-                    display: "block",
-                    marginTop: "4px",
-                    fontSize: "13px",
-                    color: "#7f8b84",
-                  }}
-                >
-                  Reminder at {reminder.time}
-                </span>
-              </div>
+                {profileSettings.notifications ? "ON" : "OFF"}
+              </button>
             </div>
 
-            
-          </div>
-        </div>
-      );
-    })}
-  </div>
-</section>
+            <div style={{ marginTop: "18px" }}>
+              {mealReminders.map((reminder) => (
+                <div key={reminder.id} style={settingRow}>
+                  <div>
+                    <strong>
+                      {reminder.type === "Breakfast" ? "🌅" :
+                       reminder.type === "Lunch" ? "☀️" :
+                       reminder.type === "Snack" ? "🌇" : "🌙"}{" "}
+                      {reminder.type}
+                    </strong>
+                    <div style={{ color: "#7f8b84", fontSize: "13px", marginTop: "4px" }}>
+                      Reminder at {reminder.time}
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => toggleMealReminder(reminder.id)}
+                    style={{
+                      ...settingButton,
+                      background: reminder.enabled
+                        ? "#72ed91"
+                        : "rgba(114,237,145,0.08)",
+                      color: reminder.enabled ? "#07140d" : "#72ed91",
+                    }}
+                  >
+                    {reminder.enabled ? "ON" : "OFF"}
+                  </button>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* SECURITY */}
           <section style={settingsCard}>
             <h2 style={{ margin: 0, fontSize: "22px" }}>🔐 Account & Security</h2>
             <p
@@ -4550,17 +4352,7 @@ allergies:
             </div>
 
             {showFeedback && (
-              <form
-  onSubmit={handleFeedbackSubmit}
-  style={{
-    marginTop: "22px",
-    display: "grid",
-    gap: "22px",
-    maxWidth: "850px",
-    marginLeft: "auto",
-    marginRight: "auto",
-  }}
->
+              <form onSubmit={handleFeedbackSubmit} style={{ marginTop: "22px", display: "grid", gap: "20px" }}>
                 <div>
                   <label style={{ display: "block", color: profileSettings.theme === "light" ? "#68756d" : "#888888", fontSize: "13px", marginBottom: "10px" }}>
                     How would you rate your NutriAI experience? <span style={{ color: "#72ed91" }}>*</span>
@@ -6422,7 +6214,7 @@ allergies:
                             marginTop: "10px",
                           }}
                         >
-                          {cleanFoodName(item.meal.name)}
+                          {item.meal.name}
                         </h3>
 
                         <div
@@ -6772,7 +6564,7 @@ allergies:
                           display: "block",
                         }}
                       >
-                        {cleanFoodName(meal.name)}
+                        {meal.name}
                       </strong>
 
                       <span
@@ -7045,7 +6837,7 @@ allergies:
                         marginTop: "8px",
                       }}
                     >
-                      {cleanFoodName(meal.name)}
+                      {meal.name}
                     </h3>
 
                     <p
@@ -7690,7 +7482,7 @@ allergies:
                     lineHeight: "1.15",
                   }}
                 >
-                  {cleanFoodName(selectedMeal.name)}
+                  {selectedMeal.name}
                 </h2>
 
                 <p
@@ -8756,4 +8548,4 @@ allergies:
 }
 
 
-export default App;
+export default NutriAIDashboard;
